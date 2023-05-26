@@ -23,17 +23,6 @@ function App() {
 
     const [isLoading, setIsLoading] = useState(false)
 
-    useEffect(() => {
-        checkToken()
-        api.getInitialCards()
-            .then((cards) => setCards(cards))
-            .catch(console.error)
-        api.getUserInfo()
-            .then((userInfo) => setCurrentUser(userInfo))
-            .catch(console.error)
-    }, [])
-
-
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
@@ -187,6 +176,21 @@ function App() {
                 setIsStatusAuthPopupOpen(true)
             })
     }
+
+    useEffect(() => {
+        checkToken()
+    }, [])
+
+    useEffect(() => {
+        if (loggedIn) {
+            api.getInitialCards()
+                .then((cards) => setCards(cards))
+                .catch(console.error)
+            api.getUserInfo()
+                .then((userInfo) => setCurrentUser(userInfo))
+                .catch(console.error)
+        }
+    }, [loggedIn])
 
     return (
         <div className="root">
